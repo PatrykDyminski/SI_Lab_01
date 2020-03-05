@@ -77,6 +77,68 @@ namespace SI_Lab_01
             return sum;
         }
 
+        static (int[] gene, float score) GreedyAlgorithm(Vector2[] cities)
+        {
+      
+            bool[] visited = new bool[cities.Length];
+
+            Random rnd = new Random();
+            int firstRandomCity = rnd.Next(cities.Length);
+
+            List<int> gene = new List<int>();
+
+            visited[firstRandomCity] = true;
+            gene.Add(firstRandomCity);
+
+            int numVisited = 1;
+            int prevCity = firstRandomCity;
+
+            while(numVisited < cities.Length)
+            {
+                float minCost = float.MaxValue;
+                int currIndex = -1;
+
+                for (int i = 0; i < cities.Length; i++)
+                {
+                    if (!visited[i])
+                    {
+                        float cost = Vector2.Distance(cities[prevCity], cities[i]);
+                        if (cost < minCost)
+                        {
+                            minCost = cost;
+                            currIndex = i;
+                        }
+                    }
+                }
+
+                if (minCost == float.MaxValue)
+                {
+                    break;
+                }
+                else
+                {
+                    prevCity = currIndex;
+                    visited[currIndex] = true;
+                    gene.Add(currIndex);
+                    numVisited += 1;
+                }
+
+            }
+
+            var distance = SumDistance(gene.ToArray(), cities);
+
+            return (gene.ToArray(), distance);
+        }
+
+        static void PrintGene(int[] gene)
+        {
+            foreach(var elem in gene)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
+        }
+
         static Vector2[] ReadFile()
         {
             const string f = "berlin11_modified.tsp";
@@ -110,7 +172,14 @@ namespace SI_Lab_01
             Console.WriteLine(randPop.Length);
 
             var minnn = BestResultFromPopulation(randPop, cities);
-            Console.WriteLine(minnn);
+            //Console.WriteLine(minnn);
+
+            var greedy = GreedyAlgorithm(cities);
+            var gredGene = greedy.gene;
+            var gredScore = greedy.score;
+
+            Console.WriteLine(gredScore);
+            PrintGene(gredGene);
 
         }
     }
