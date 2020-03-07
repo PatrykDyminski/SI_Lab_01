@@ -76,5 +76,15 @@ namespace SI_Lab_01
             Console.WriteLine();
         }
 
+        public static void PrintPopulation(int[][] pop)
+        {
+            Console.WriteLine("Population:");
+            foreach (var gene in pop)
+            {
+                PrintGene(gene);
+            }
+            Console.WriteLine("End of Population");
+        }
+
     }
 }

@@ -9,8 +9,10 @@ namespace SI_Lab_01
        
         static void Main(string[] args)
         {
+            
             Vector2[] cities = DataReader.ReadFile();
 
+            /*
             int ile = 100000;
                         
             var random = RandomSolution.RandomAlgorithm(cities, ile);
@@ -31,6 +33,35 @@ namespace SI_Lab_01
             Console.WriteLine("Wyniki Algorytmu Zachłannego z losowym punktem startowym:");
             Console.WriteLine(gredScore);
             Utils.PrintGene(gredGene);
+
+            Console.WriteLine();
+            //-----------------------------------------------------------------------------
+
+
+            */
+
+            var popSize = 100;
+            var generations = 100;
+            var crossProb = 0.7;
+            var mutProb = 0.1;
+            var tourSize = 5;
+
+
+            var geneToMut = Utils.RandomGene(10);
+            Utils.PrintGene(geneToMut);
+
+            var mutatedGene = GeneticSolution.Mutate(geneToMut);
+            Utils.PrintGene(geneToMut);
+            Utils.PrintGene(mutatedGene);
+
+            Console.WriteLine();
+            //-----------------------------------------------------------------------------
+
+            var pop = Utils.RandomPopulation(100, cities.Length);
+
+            var newPop = GeneticSolution.TourSelect(pop, 5, cities);
+
+
 
         }
     }
