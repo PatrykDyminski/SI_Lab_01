@@ -21,7 +21,6 @@ namespace SI_Lab_01
 
             List<int> cut = parent1.ToList<int>().GetRange(i, j-i+1);
             List<int> rest = parent2.ToList<int>();
-            Utils.PrintGene(rest.ToArray());
             rest = rest.Except(cut).ToList();
             rest.InsertRange(i,cut);
             g1 = rest.ToArray();
