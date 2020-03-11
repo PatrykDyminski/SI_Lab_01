@@ -38,7 +38,7 @@ namespace SI_Lab_01
             //-----------------------------------------------------------------------------
 
 
-            */
+            
 
             var popSize = 100;
             var generations = 100;
@@ -61,6 +61,15 @@ namespace SI_Lab_01
 
             var newPop = GeneticSolution.TourSelect(pop, 5, cities);
 
+            */
+
+            //-----------------------------------------------------------------------------
+
+
+            int[] a = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            int[] b = new int[] { 5,7,4,9,1,3,6,2,8 };
+
+            var x = GeneticSolution.Cross(a, b);
 
 
         }

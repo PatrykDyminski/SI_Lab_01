@@ -8,9 +8,38 @@ namespace SI_Lab_01
 {
     class GeneticSolution
     {
-        public static void Cross()
+        public static (int[] g1, int[] g2) Cross(int[] parent1, int[] parent2)
         {
+            int length = parent1.Length;
 
+            int[] g1 = new int[length];
+            int[] g2 = new int[length];
+
+            Random rnd = new Random();
+            int i = rnd.Next(0, length);
+            int j = rnd.Next(i, length);
+
+            List<int> cut = parent1.ToList<int>().GetRange(i, j-i+1);
+            List<int> rest = parent2.ToList<int>();
+            Utils.PrintGene(rest.ToArray());
+            rest = rest.Except(cut).ToList();
+            rest.InsertRange(i,cut);
+            g1 = rest.ToArray();
+
+            List<int> cut2 = parent2.ToList<int>().GetRange(i, j - i + 1);
+            List<int> rest2 = parent1.ToList<int>();
+            rest2 = rest2.Except(cut2).ToList();
+            rest2.InsertRange(i, cut2);
+            g2 = rest2.ToArray();
+
+            Console.WriteLine(i);
+            Console.WriteLine(j);
+            Utils.PrintGene(cut.ToArray());
+            Utils.PrintGene(rest.ToArray());
+            Utils.PrintGene(cut2.ToArray());
+            Utils.PrintGene(rest2.ToArray());
+
+            return (g1, g2);
         }
 
         public static int[] Mutate(int[] genotype)
