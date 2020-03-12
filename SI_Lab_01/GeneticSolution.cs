@@ -144,7 +144,6 @@ namespace SI_Lab_01
 
 
                 /*
-
                 if (randomNum < helperArray[0])
                 {
                     newPop[k] = 0;
