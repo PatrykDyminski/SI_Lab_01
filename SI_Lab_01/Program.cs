@@ -71,7 +71,7 @@ namespace SI_Lab_01
 
             var x = GeneticSolution.Cross(a, b);
 
-
+            //hahaha dziala
         }
     }
 }
