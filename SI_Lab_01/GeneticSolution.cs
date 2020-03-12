@@ -106,10 +106,72 @@ namespace SI_Lab_01
 
             return selectedPop;
         }
-        
-        public static void RussianSelect()
-        {
 
+        public static int[][] RussianSelect(int[][] pop, int epsilon, Vector2[] cities)
+        {
+            Console.WriteLine("inputPop");
+            Utils.PrintPopulation(pop);
+
+
+            float[] fitnessy = new float[pop.Length];
+
+            for(int i = 0; i< pop.Length; i++)
+            {
+                fitnessy[i] = Utils.SumDistance(pop[i], cities);
+            }
+
+            fitnessy.ToList().ForEach(i => Console.WriteLine(i.ToString()));
+
+            float maxDistance = fitnessy.ToList().Max();
+
+            float[] helperArray = new float[pop.Length];
+
+            helperArray[0] = maxDistance - fitnessy[0] + epsilon;
+
+            for(int j = 1; j < pop.Length; j++)
+            {
+                helperArray[j] = helperArray[j - 1] + maxDistance - fitnessy[j] + epsilon;
+            }
+
+
+            Random rnd = new Random();
+
+            int[][] newPop = new int[pop.Length][];
+
+            for (int k = 0; k<pop.Length; k++)
+            {
+                var randomNum = rnd.Next(0, (int)helperArray.Last());
+
+
+                /*
+
+                if (randomNum < helperArray[0])
+                {
+                    newPop[k] = 0;
+                }
+                else
+                {
+                    for (int l = 0; l < pop.Length - 1; l++)
+                    {
+                        if (helperArray[l] <= randomNum && randomNum < helperArray[l + 1])
+                        {
+                            newPop[k] = l + 1;
+                        }
+                    }
+                }
+
+                */
+
+                var indexOfGene = Array.IndexOf(helperArray, helperArray.First(x => x >= randomNum));
+
+                newPop[k] = pop[indexOfGene];
+
+            }
+
+            Console.WriteLine("selectedPop:");
+            Utils.PrintPopulation(newPop);
+
+            return newPop;
         }
 
         /*

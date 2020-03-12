@@ -14,6 +14,9 @@ namespace SI_Lab_01
 
             /*
             int ile = 100000;
+
+            //-----------------------------------------------------------------------------
+            // testowanie algorytmu losowego
                         
             var random = RandomSolution.RandomAlgorithm(cities, ile);
             var randGene = random.gene;
@@ -25,7 +28,8 @@ namespace SI_Lab_01
 
             Console.WriteLine();
             //-----------------------------------------------------------------------------
-            
+            // testowanie algorytmu zachłannego
+
             var greedy = GreedySolution.GreedyAlgorithm(cities);
             var gredGene = greedy.gene;
             var gredScore = greedy.score;
@@ -37,14 +41,14 @@ namespace SI_Lab_01
             Console.WriteLine();
             //-----------------------------------------------------------------------------
 
-
-            
-
             var popSize = 100;
             var generations = 100;
             var crossProb = 0.7;
             var mutProb = 0.1;
             var tourSize = 5;
+
+            //-----------------------------------------------------------------------------
+            // testowanie mutacji
 
 
             var geneToMut = Utils.RandomGene(10);
@@ -55,23 +59,34 @@ namespace SI_Lab_01
             Utils.PrintGene(mutatedGene);
 
             Console.WriteLine();
+
+
             //-----------------------------------------------------------------------------
+            // testowanie selekcji turniejowej
+
 
             var pop = Utils.RandomPopulation(100, cities.Length);
-
             var newPop = GeneticSolution.TourSelect(pop, 5, cities);
 
-            */
 
             //-----------------------------------------------------------------------------
+            // testowanie krzyżowania
 
 
             int[] a = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             int[] b = new int[] { 5,7,4,9,1,3,6,2,8 };
 
             var x = GeneticSolution.Cross(a, b);
+   
 
-            //hahaha dziala
+            */
+
+            //-----------------------------------------------------------------------------
+            // testowanie selekcji ruletkowej
+
+
+            var pop = Utils.RandomPopulation(20, cities.Length);
+            var newPop = GeneticSolution.RussianSelect(pop, 5, cities);
         }
     }
 }
