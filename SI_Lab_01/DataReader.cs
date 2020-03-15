@@ -7,9 +7,9 @@ namespace SI_Lab_01
 {
     class DataReader
     {
-        public static Vector2[] ReadFile()
+        public static Vector2[] ReadFile(string filename)
         {
-            const string f = "berlin11_modified.tsp";
+            string f = filename;
             var lines = File.ReadAllLines(f);
 
             char[] delimiterChars = { ' ', '\t' };

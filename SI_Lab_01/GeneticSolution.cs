@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
@@ -31,12 +32,16 @@ namespace SI_Lab_01
             rest2.InsertRange(i, cut2);
             g2 = rest2.ToArray();
 
+
+            /*
             Console.WriteLine(i);
             Console.WriteLine(j);
             Utils.PrintGene(cut.ToArray());
             Utils.PrintGene(rest.ToArray());
             Utils.PrintGene(cut2.ToArray());
             Utils.PrintGene(rest2.ToArray());
+            */
+
 
             return (g1, g2);
         }
@@ -53,10 +58,28 @@ namespace SI_Lab_01
             return genotype;
         }
 
+        public static int[] Mutate2(int[] genotype)
+        {
+            Random rnd = new Random();
+            int i = rnd.Next(0, genotype.Length);
+            int j = rnd.Next(0, genotype.Length);
+
+            if (i > j)
+            {
+                int temp = i;
+                i = j;
+                j = temp;
+            }
+
+            Array.Reverse(genotype, i, j-i+1);
+
+            return genotype;
+        }
+
         public static int[][] TourSelect(int[][] pop, int tourSize, Vector2[] cities)
         {
-            Console.WriteLine("inputPop");
-            Utils.PrintPopulation(pop);
+            //Console.WriteLine("inputPop");
+            //Utils.PrintPopulation(pop);
 
             var popSize = pop.Length;
 
@@ -68,7 +91,7 @@ namespace SI_Lab_01
                 sums[i] = Utils.SumDistance(pop[i], cities);
             }
 
-            sums.ToList().ForEach(i => Console.WriteLine(i.ToString()));
+            //sums.ToList().ForEach(i => Console.WriteLine(i.ToString()));
 
             int[][] selectedPop = new int[popSize][];
 
@@ -95,23 +118,23 @@ namespace SI_Lab_01
                     if (tempScore < bestScore)
                     {
                         bestScore = tempScore;
-                        bestIndex = l;
+                        //TU COS ZLE MOZE BYC
+                        bestIndex = randomSelected[l];
                     }
                 }
                 selectedPop[i] = pop[bestIndex];
             }
 
-            Console.WriteLine("selectedPop:");
-            Utils.PrintPopulation(selectedPop);
+            //Console.WriteLine("selectedPop:");
+            //Utils.PrintPopulation(selectedPop);
 
             return selectedPop;
         }
 
         public static int[][] RussianSelect(int[][] pop, int epsilon, Vector2[] cities)
         {
-            Console.WriteLine("inputPop");
-            Utils.PrintPopulation(pop);
-
+            //Console.WriteLine("inputPop");
+            //Utils.PrintPopulation(pop);
 
             float[] fitnessy = new float[pop.Length];
 
@@ -120,7 +143,7 @@ namespace SI_Lab_01
                 fitnessy[i] = Utils.SumDistance(pop[i], cities);
             }
 
-            fitnessy.ToList().ForEach(i => Console.WriteLine(i.ToString()));
+            //fitnessy.ToList().ForEach(i => Console.WriteLine(i.ToString()));
 
             float maxDistance = fitnessy.ToList().Max();
 
@@ -167,21 +190,72 @@ namespace SI_Lab_01
 
             }
 
-            Console.WriteLine("selectedPop:");
-            Utils.PrintPopulation(newPop);
-
             return newPop;
         }
 
-        /*
+        
         public static (int[] gene, float score) GeneticAlgorithm(Vector2[] cities, int popSize, int generations, float crossProb, float mutProb, int tourSize)
         {
 
+            var csv = new StringBuilder();
 
-            return;
+            var prevPop = Utils.RandomPopulation(popSize, cities.Length);
+
+            float bestScore = float.MaxValue;
+            int[] bestGene = new int[cities.Length];
+
+            Random rnd = new Random();
+
+            for (int i = 0; i < generations; i++)
+            {
+                var newPop = TourSelect(prevPop, tourSize, cities);
+                int[][] tempPop = new int[popSize][];
+
+                for (int j = 0; j < newPop.Length; j += 2)
+                {
+                    if (rnd.NextDouble() < crossProb)
+                    {
+                        var dzieci = Cross(newPop[j], newPop[j + 1]);
+                        tempPop[j] = dzieci.g1;
+                        tempPop[j + 1] = dzieci.g2;
+                    }
+                    else
+                    {
+                        tempPop[j] = newPop[j];
+                        tempPop[j + 1] = newPop[j + 1];
+                    }
+                }
+
+                for (int k = 0; k < newPop.Length; k++)
+                {
+                    if (rnd.NextDouble() < mutProb)
+                    {
+                        tempPop[k] = Mutate2(tempPop[k]);
+                    }
+                }
+
+                //Utils.PrintPopulation(tempPop);
+                prevPop = tempPop.Select(a => a.ToArray()).ToArray();
+
+                var bestInPop = Utils.BestResultFromPopulation(prevPop,cities);
+                var worstInPop = Utils.WorstResultFromPopulation(prevPop, cities);
+                var avgInPop = Utils.AvgResultFromPopulation(prevPop, cities);
+
+                var newLine = string.Format("{0};{1};{2};{3};;;", i, bestInPop.score, avgInPop, worstInPop.score);
+                csv.AppendLine(newLine);
+
+                if (bestInPop.score<bestScore)
+                {
+                    bestScore = bestInPop.score;
+                    bestGene = bestInPop.gene;
+                }
+
+            }
+
+            File.WriteAllText("results.csv", csv.ToString());
+
+            return (bestGene, bestScore);
         }
-
-        */
 
 
     }

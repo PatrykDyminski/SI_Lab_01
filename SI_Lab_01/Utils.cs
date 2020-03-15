@@ -30,9 +30,7 @@ namespace SI_Lab_01
         }
 
         public static (int[] gene, float score) BestResultFromPopulation(int[][] pop, Vector2[] cities)
-        {
-            List<float> results = new List<float>();
-
+        { 
             float minn = float.MaxValue;
             int[] bestGene = new int[cities.Length];
 
@@ -45,12 +43,40 @@ namespace SI_Lab_01
                     minn = dist;
                     bestGene = gene;
                 }
-                //results.Add(dist);
             }
 
-            //var minDist = results.Min();
-
             return (bestGene, minn);
+        }
+
+        public static (int[] gene, float score) WorstResultFromPopulation(int[][] pop, Vector2[] cities)
+        {
+            float maxx = float.MinValue;
+            int[] worstGene = new int[cities.Length];
+
+            foreach (var gene in pop)
+            {
+                var dist = SumDistance(gene, cities);
+
+                if (dist > maxx)
+                {
+                    maxx = dist;
+                    worstGene = gene;
+                }
+            }
+
+            return (worstGene, maxx);
+        }
+
+        public static float AvgResultFromPopulation(int[][] pop, Vector2[] cities)
+        {
+            float cumulate = 0f;
+
+            foreach(var gene in pop)
+            {
+                cumulate += SumDistance(gene, cities);
+            }
+
+            return cumulate/pop.Length;
         }
 
         public static float SumDistance(int[] gene, Vector2[] cities)

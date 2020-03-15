@@ -9,8 +9,11 @@ namespace SI_Lab_01
        
         static void Main(string[] args)
         {
-            
-            Vector2[] cities = DataReader.ReadFile();
+            string berlin11 = "berlin11_modified.tsp";
+            string berlin52 = "berlin52.tsp";
+
+            string filename = berlin52;
+            Vector2[] cities = DataReader.ReadFile(filename);
 
             /*
             int ile = 100000;
@@ -41,11 +44,7 @@ namespace SI_Lab_01
             Console.WriteLine();
             //-----------------------------------------------------------------------------
 
-            var popSize = 100;
-            var generations = 100;
-            var crossProb = 0.7;
-            var mutProb = 0.1;
-            var tourSize = 5;
+            
 
             //-----------------------------------------------------------------------------
             // testowanie mutacji
@@ -79,7 +78,7 @@ namespace SI_Lab_01
             var x = GeneticSolution.Cross(a, b);
    
 
-            */
+            
 
             //-----------------------------------------------------------------------------
             // testowanie selekcji ruletkowej
@@ -87,6 +86,19 @@ namespace SI_Lab_01
 
             var pop = Utils.RandomPopulation(20, cities.Length);
             var newPop = GeneticSolution.RussianSelect(pop, 5, cities);
+
+            */
+
+            var popSize = 100;
+            var generations = 1000;
+            var crossProb = 0.85f;
+            var mutProb = 0.5f;
+            var tourSize = 5;
+
+            var genetic = GeneticSolution.GeneticAlgorithm(cities,popSize,generations,crossProb,mutProb,tourSize);
+
+            Console.WriteLine(genetic.score);
+            Utils.PrintGene(genetic.gene);
         }
     }
 }
