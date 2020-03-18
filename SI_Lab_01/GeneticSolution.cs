@@ -164,29 +164,27 @@ namespace SI_Lab_01
             for (int k = 0; k<pop.Length; k++)
             {
                 var randomNum = rnd.Next(0, (int)helperArray.Last());
-
-
-                /*
+  
                 if (randomNum < helperArray[0])
                 {
-                    newPop[k] = 0;
+                    newPop[k] = pop[0];
                 }
                 else
                 {
-                    for (int l = 0; l < pop.Length - 1; l++)
+                    for (int l = 1; l < pop.Length; l++)
                     {
-                        if (helperArray[l] <= randomNum && randomNum < helperArray[l + 1])
+                        if (helperArray[l] >= randomNum)
                         {
-                            newPop[k] = l + 1;
+                            newPop[k] = pop[l];
                         }
                     }
                 }
 
-                */
+                
 
-                var indexOfGene = Array.IndexOf(helperArray, helperArray.First(x => x >= randomNum));
+                //var indexOfGene = Array.IndexOf(helperArray, helperArray.First(x => x >= randomNum));
 
-                newPop[k] = pop[indexOfGene];
+                //newPop[k] = pop[indexOfGene];
 
             }
 
@@ -209,6 +207,7 @@ namespace SI_Lab_01
             for (int i = 0; i < generations; i++)
             {
                 var newPop = TourSelect(prevPop, tourSize, cities);
+                //var newPop = RussianSelect(prevPop, 0, cities);
                 int[][] tempPop = new int[popSize][];
 
                 for (int j = 0; j < newPop.Length; j += 2)

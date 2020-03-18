@@ -112,5 +112,46 @@ namespace SI_Lab_01
             Console.WriteLine("End of Population");
         }
 
+        public static (float best, float worst, float avg, float std) runTests(int cycles, Vector2[] cities, int popSize, int generations, float crossProb, float mutProb, int tourSize)
+        {
+
+            float[] results = new float[cycles];
+
+            for (int i = 0; i < cycles; i++)
+            {
+                var genetic = GeneticSolution.GeneticAlgorithm(cities, popSize, generations, crossProb, mutProb, tourSize);
+
+                results[i] = genetic.score;
+
+                Console.WriteLine(genetic.score);
+                //Utils.PrintGene(genetic.gene);
+            }
+
+            float best = results.ToList().Min();
+            float worst = results.ToList().Max();
+            float avg = results.ToList().Average();
+            float std = StdDev(results.ToList());
+
+            return (best, worst, avg, std);
+        }
+
+        public static float StdDev(List<float> values)
+        {
+            float ret = 0.0f;
+            int count = values.Count();
+            if (count > 1)
+            {
+                //Compute the Average
+                float avg = values.Average();
+
+                //Perform the Sum of (value-avg)^2
+                float sum = values.Sum(d => (d - avg) * (d - avg));
+
+                //Put it all together
+                ret = (float)Math.Sqrt(sum / count);
+            }
+            return ret;
+        }
+
     }
 }
