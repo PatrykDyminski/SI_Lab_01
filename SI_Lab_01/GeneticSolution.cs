@@ -191,7 +191,62 @@ namespace SI_Lab_01
             return newPop;
         }
 
-        
+        public static int[][] RussianSelect2(int[][] population, int epsilon, Vector2[] cities, int scale)
+        {
+            float[] distances = new float[population.Length];
+
+            for (int i = 0; i < population.Length; i++)
+            {
+                distances[i] = Utils.SumDistance(population[i], cities);
+            }
+
+            int[][] result = new int[population.Length][];
+
+            float[] ranges = new float[population.Length];
+            float max = 0, sum = 0;
+
+            for (int i = 0; i < population.Length; i++)
+            {
+                if (distances[i] > max)
+                {
+                    max = distances[i];
+                }
+            }
+
+            for (int i = 0; i < population.Length; i++)
+            {
+                ranges[i] = (max - distances[i]) * scale + epsilon;
+                sum += ranges[i];
+                if (i > 0) ranges[i] += ranges[i - 1];
+            }
+
+            for (int i = 0; i < population.Length; i++)
+            {
+                ranges[i] = ranges[i] / sum;
+            }
+
+            Random rnd = new Random();
+
+            double chosen; bool found;
+            for (int i = 0; i < population.Length; i++)
+            {
+                chosen = rnd.NextDouble(); found = false;
+                for (int j = 0; j < population.Length && !found; j++)
+                {
+                    if (chosen < ranges[j])
+                    {
+                        result[i] = new int[population[j].Length];
+                        //Array.Copy(population[j], result[i], population[j].Length);
+                        result[i] = (int[])population[j].Clone();
+                        found = true;
+                    }
+                }
+            }
+            return result;
+        }
+    
+
+
         public static (int[] gene, float score) GeneticAlgorithm(Vector2[] cities, int popSize, int generations, float crossProb, float mutProb, int tourSize)
         {
 
@@ -207,7 +262,7 @@ namespace SI_Lab_01
             for (int i = 0; i < generations; i++)
             {
                 var newPop = TourSelect(prevPop, tourSize, cities);
-                //var newPop = RussianSelect(prevPop, 0, cities);
+                //var newPop = RussianSelect2(prevPop, 1, cities, 1);
                 int[][] tempPop = new int[popSize][];
 
                 for (int j = 0; j < newPop.Length; j += 2)

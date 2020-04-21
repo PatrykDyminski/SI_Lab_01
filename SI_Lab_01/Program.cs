@@ -15,27 +15,23 @@ namespace SI_Lab_01
             string fl = "fl417.tsp";
             string kroA150 = "kroA150.tsp";
             string kroA100 = "kroA100.tsp";
+            string kroA200 = "kroA200.tsp";
             string berlin52 = "berlin52.tsp";
 
-            string filename = berlin52;
+            string filename = kroA150;
             Vector2[] cities = DataReader.ReadFile(filename);
 
             var popSize = 600;
             var generations = 1000;
             var crossProb = 0.85f;
             var mutProb = 0.35f;
-            var tourSize = 20;
-
-            //var genetic = GeneticSolution.GeneticAlgorithm(cities,popSize,generations,crossProb,mutProb,tourSize);
-
-            //Console.WriteLine(genetic.score);
-            //Utils.PrintGene(genetic.gene);
+            var tourSize = 600;
 
             int cycles = 10;
 
             var testResult = Utils.runTests(cycles, cities, popSize, generations,crossProb,mutProb,tourSize);
-
-            //var testResult = RandomSolution.RandomAlgorithm2(cities, 10000000);
+            //var testResult = RandomSolution.RandomAlgorithm2(cities, 1000000);
+            //var testResult = GreedySolution.GreedyAlgorithmAll(cities);
 
             Console.WriteLine("Best: " + testResult.best);
             Console.WriteLine("Worst: " + testResult.worst);
